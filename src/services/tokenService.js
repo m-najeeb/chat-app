@@ -188,9 +188,7 @@ class TokenService {
       }
 
       // Properly instantiate ObjectId using 'new'
-      const userDetails = await UserQueries.getUserByIdForRefreshToken(
-        payload.userId
-      );
+      const userDetails = await UserQueries.getUserById(payload.userId);
 
       // Check if the user exists
       if (!userDetails) {

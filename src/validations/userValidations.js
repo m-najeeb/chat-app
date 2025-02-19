@@ -27,6 +27,17 @@ class userValidation {
     });
     return schema.validate(userData);
   }
+
+  async profileEdit(userData) {
+    const schema = Joi.object({
+      id: Joi.string().required(),
+      profilePicture: Joi.string().uri().optional(),
+      fullName: Joi.string().max(55).optional(),
+      phone: Joi.string().length(11).optional(),
+      country: Joi.string().optional(),
+    });
+    return schema.validate(userData);
+  }
 }
 
 module.exports = new userValidation();

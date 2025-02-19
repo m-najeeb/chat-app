@@ -11,10 +11,12 @@ module.exports = {
   OTP_VERIFIED: "OTP Verified",
   OTP_EXPIRED: "OTP Expired",
   PHONE_EXISTS: "Phone Number Exists",
+  PROFILE_UPDATED: "Profile Updated",
   RECORD_FOUND: "Record Found",
   SUCCESSFULLY_SIGN_IN: "Successfully Sign In",
   SUCCESSFULLY_SIGN_UP: "Successfully Sign Up",
   TOKEN_EXPIRED: "Token Expired",
   USERNAME_EXISTS: "Username Exists",
   USER_NOT_FOUND: "User Not Found",
+  UNAUTHORIZED: "Unauthorized",
 };

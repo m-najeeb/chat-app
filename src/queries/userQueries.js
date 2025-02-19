@@ -19,6 +19,13 @@ class UserQueries {
   async getUserByEmail(email) {
     return await UserSchema.findOne({ email });
   }
+
+  async getUserDetailsById(id) {
+    return await UserSchema.findOne({ _id: id });
+  }
+  async getUserById(id) {
+    return await UserSchema.findById(id);
+  }
 }
 
 module.exports = new UserQueries();
