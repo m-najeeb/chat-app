@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 
-const setup = require("./api/routes");
+// const setup = require("./api/routes");
 
 const app = express();
 
@@ -41,7 +41,7 @@ mongoose
     process.exit(1);
   });
 
-setup(app);
+// setup(app);
 
 // port listening
 app.listen(port, () => {
