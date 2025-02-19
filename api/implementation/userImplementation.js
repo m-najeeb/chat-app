@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const UserQueries = require("../../src/queries/userQueries");
 const ResponseService = require("../../src/services/responseService");
 // const { sendOTP } = require('../../src/services/emailService');
-// const tokenService = require("../../src/services/tokenService");
+const tokenService = require("../../src/services/tokenService");
 const constants = require("../../src/utilities/constants");
 const messages = require("../../src/utilities/messages");
 
@@ -71,6 +71,44 @@ class UserImplementation {
           messages.USER_NOT_FOUND
         );
       }
+
+      //! Not Sending OTP
+      //   if (user.isEmailVerified === false) {
+      //     const otp = await sendOTP(data.email);
+
+      //     ResponseService.status = constants.CODE.NON_AUTHORITIVE_INFORMATION;
+      //     return ResponseService.responseService(
+      //       constants.STATUS.SUCCESS,
+      //       null,
+      //       messages.OTP_SENT
+      //     );
+      //   }
+
+      const isMatch = await bcrypt.compare(data.password, user.password);
+
+      if (!isMatch) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.INVALID_CREDENTIALS
+        );
+      }
+
+      const userData = { id: user._id, email: user.email };
+
+      const accessToken = await tokenService.accessToken(userData);
+      const refreshToken = await tokenService.refreshToken(user._id);
+      user.isOnline = true;
+      user.refreshToken = refreshToken;
+      await user.save();
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        { accessToken: accessToken, user: user },
+        messages.RECORD_FOUND
+      );
     } catch (error) {
       ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
       return ResponseService.responseService(
