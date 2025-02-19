@@ -60,6 +60,37 @@ class UserController {
       );
     }
   }
+
+  async verifyOTP(req, res) {
+    try {
+      const data = req.body;
+      if (!data) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return res
+          .status(ResponseService.status)
+          .send(
+            ResponseService.responseService(
+              constants.STATUS.ERROR,
+              error.details[0].message,
+              messages.INVALID_DATA
+            )
+          );
+      }
+
+      const email = data.email.toLowerCase();
+      const otp = data.otp;
+
+      const response = await userImplementation.verifyOTP(email, otp);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserController();

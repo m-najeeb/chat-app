@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 const UserQueries = require("../../src/queries/userQueries");
 const ResponseService = require("../../src/services/responseService");
-// const { sendOTP } = require('../../src/services/emailService');
+const { sendOTP } = require("../../src/services/emailService");
 const tokenService = require("../../src/services/tokenService");
 const constants = require("../../src/utilities/constants");
 const messages = require("../../src/utilities/messages");
@@ -40,8 +40,7 @@ class UserImplementation {
       const response = await UserQueries.createUser(data);
 
       if (response) {
-        //! Currently not sending OTP
-        // const otp = await sendOTP(email);
+        const otp = await sendOTP(email);
         ResponseService.status = constants.CODE.OK;
         return ResponseService.responseService(
           constants.STATUS.SUCCESS,
@@ -110,6 +109,61 @@ class UserImplementation {
         messages.RECORD_FOUND
       );
     } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async verifyOTP(email, providedOtp) {
+    try {
+      const user = await UserQueries.getUserByEmail(email);
+
+      if (!user) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.USER_NOT_FOUND
+        );
+      }
+
+      if (user.otp !== providedOtp) {
+        ResponseService.status = constants.CODE.NOT_ACCEPTED;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.INVALID_OTP
+        );
+      }
+
+      const currentTime = new Date();
+      if (currentTime > user.otpExpiration) {
+        ResponseService.status = constants.CODE.NOT_ACCEPTED;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.OTP_EXPIRED
+        );
+      }
+
+      user.isEmailVerified = true;
+      user.otp = null;
+      user.otpExpiration = null;
+
+      await user.save();
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        [],
+        messages.OTP_VERIFIED
+      );
+    } catch (error) {
+      console.log(error);
       ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
       return ResponseService.responseService(
         constants.STATUS.EXCEPTION,
