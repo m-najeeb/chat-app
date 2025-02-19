@@ -260,7 +260,7 @@ class UserImplementation {
       ResponseService.status = constants.CODE.OK;
       return ResponseService.responseService(
         constants.STATUS.SUCCESS,
-        [],
+        response,
         messages.PASSWORD_UPDATED
       );
     } catch (error) {
