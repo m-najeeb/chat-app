@@ -1,0 +1,32 @@
+const Joi = require("joi");
+const constants = require("../utilities/constants");
+
+class userValidation {
+  async signUp(userData) {
+    const schema = Joi.object({
+      profilePicture: Joi.string().uri().optional(),
+      fullName: Joi.string().max(55).required(),
+      username: Joi.string().max(55).required(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().length(11).required(),
+      country: Joi.string().optional(),
+      password: Joi.string()
+        .regex(constants.PASSWORD.REGEX)
+        .required()
+        .messages({
+          "string.pattern.base": constants.PASSWORD.MESSAGE_FORMAT,
+        }),
+    });
+    return schema.validate(userData);
+  }
+
+  async signIn(userData) {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    });
+    return schema.validate(userData);
+  }
+}
+
+module.exports = new userValidation();

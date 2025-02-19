@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 
-// const setup = require("./api/routes");
+const setup = require("./api/routes");
 
 const app = express();
 
@@ -25,6 +25,7 @@ logger.token("status-format", (req, res) => {
 
 app.use(logger(":method :url :status-format :status :response-time ms"));
 
+//test route
 app.get("/", (req, res) => {
   res.send("Hello, Server is Running!");
 });
@@ -41,7 +42,7 @@ mongoose
     process.exit(1);
   });
 
-// setup(app);
+setup(app);
 
 // port listening
 app.listen(port, () => {
