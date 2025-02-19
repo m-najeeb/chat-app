@@ -26,6 +26,14 @@ class UserQueries {
   async getUserById(id) {
     return await UserSchema.findById(id);
   }
+
+  async updateUserPassword(email, newPassword) {
+    return await UserSchema.findOneAndUpdate(
+      { email: email },
+      { $set: { password: newPassword } },
+      { new: true }
+    );
+  }
 }
 
 module.exports = new UserQueries();

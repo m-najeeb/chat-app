@@ -1,11 +1,11 @@
 module.exports = {
   STATUS: {
-    SUCCESS: 'SUCCESS',
-    ERROR: 'FAILURE',
-    ACCEPTED: 'ACCEPTED',
-    NOT_ACCEPTED: 'NOT_ACCEPTED',
-    EXCEPTION: 'EXCEPTION',
-    NOT_FOUND: 'NOT FOUND',
+    SUCCESS: "SUCCESS",
+    ERROR: "FAILURE",
+    ACCEPTED: "ACCEPTED",
+    NOT_ACCEPTED: "NOT_ACCEPTED",
+    EXCEPTION: "EXCEPTION",
+    NOT_FOUND: "NOT FOUND",
   },
   CODE: {
     OK: 200,
@@ -24,7 +24,9 @@ module.exports = {
     SERVICE_UNAVAILABLE: 503,
   },
   PASSWORD: {
-    MESSAGE_FORMAT: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-    REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
-  }
+    MESSAGE_FORMAT:
+      "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+    REGEX:
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
+  },
 };

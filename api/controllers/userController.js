@@ -64,7 +64,8 @@ class UserController {
   async verifyOTP(req, res) {
     try {
       const data = req.body;
-      if (!data) {
+      const { error, value } = await userValidation.verifyOTP(data);
+      if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
           .status(ResponseService.status)
@@ -77,8 +78,8 @@ class UserController {
           );
       }
 
-      const email = data.email.toLowerCase();
-      const otp = data.otp;
+      const email = value.email.toLowerCase();
+      const otp = value.otp;
 
       const response = await userImplementation.verifyOTP(email, otp);
       res.status(ResponseService.status).send(response);
@@ -109,6 +110,34 @@ class UserController {
           );
       }
       const response = await userImplementation.profileEdit(value);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async changePassword(req, res) {
+    try {
+      const data = req.body;
+      const { error, value } = await userValidation.changePassword(data);
+      if (error) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return res
+          .status(ResponseService.status)
+          .send(
+            ResponseService.responseService(
+              constants.STATUS.ERROR,
+              error.details[0].message,
+              messages.INVALID_DATA
+            )
+          );
+      }
+      const response = await userImplementation.changePassword(value);
       res.status(ResponseService.status).send(response);
     } catch (error) {
       ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;

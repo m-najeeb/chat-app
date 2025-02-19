@@ -38,6 +38,28 @@ class userValidation {
     });
     return schema.validate(userData);
   }
+
+  async verifyOTP(userData) {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      otp: Joi.string().length(6).required(),
+    });
+    return schema.validate(userData);
+  }
+
+  async changePassword(userData) {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      currentPassword: Joi.string().required(),
+      newPassword: Joi.string()
+        .regex(constants.PASSWORD.REGEX)
+        .required()
+        .messages({
+          "string.pattern.base": constants.PASSWORD.MESSAGE_FORMAT,
+        }),
+    });
+    return schema.validate(userData);
+  }
 }
 
 module.exports = new userValidation();
