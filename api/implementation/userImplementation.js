@@ -187,10 +187,10 @@ class UserImplementation {
         );
       }
 
-      if (user.profilePicture) user.profilePicture = data.profilePicture;
-      if (user.fullName) user.fullName = data.fullName;
-      if (user.country) user.country = data.country;
-      if (user.phone) user.phone = data.phone;
+      if (data.profilePicture) user.profilePicture = data.profilePicture;
+      if (data.fullName) user.fullName = data.fullName;
+      if (data.country) user.country = data.country;
+      if (data.phone) user.phone = data.phone;
 
       const response = await user.save();
 
