@@ -8,7 +8,7 @@ class UserController {
   async signUp(req, res) {
     try {
       const data = req.body;
-      const { error, value } = await userValidation.signUp(data);
+      const { error, value } = userValidation.signUp(data);
       if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
@@ -36,7 +36,7 @@ class UserController {
   async signIn(req, res) {
     try {
       const data = req.body;
-      const { error, value } = await userValidation.signIn(data);
+      const { error, value } = userValidation.signIn(data);
       if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
@@ -64,7 +64,7 @@ class UserController {
   async verifyOTP(req, res) {
     try {
       const data = req.body;
-      const { error, value } = await userValidation.verifyOTP(data);
+      const { error, value } = userValidation.verifyOTP(data);
       if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
@@ -96,7 +96,7 @@ class UserController {
   async profileEdit(req, res) {
     try {
       const data = req.body;
-      const { error, value } = await userValidation.profileEdit(data);
+      const { error, value } = userValidation.profileEdit(data);
       if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
@@ -124,7 +124,7 @@ class UserController {
   async changePassword(req, res) {
     try {
       const data = req.body;
-      const { error, value } = await userValidation.changePassword(data);
+      const { error, value } = userValidation.changePassword(data);
       if (error) {
         ResponseService.status = constants.CODE.BAD_REQUEST;
         return res
@@ -138,6 +138,62 @@ class UserController {
           );
       }
       const response = await userImplementation.changePassword(value);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async forgetPassword(req, res) {
+    try {
+      const data = req.body;
+      const { error, value } = userValidation.forgetPassword(data);
+      if (error) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return res
+          .status(ResponseService.status)
+          .send(
+            ResponseService.responseService(
+              constants.STATUS.ERROR,
+              error.details[0].message,
+              messages.INVALID_DATA
+            )
+          );
+      }
+      const response = await userImplementation.forgetPassword(value);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async resetPassword(req, res) {
+    try {
+      const data = req.body;
+      const { error, value } = userValidation.resetPassword(data);
+      if (error) {
+        ResponseService.status = constants.CODE.BAD_REQUEST;
+        return res
+          .status(ResponseService.status)
+          .send(
+            ResponseService.responseService(
+              constants.STATUS.ERROR,
+              error.details[0].message,
+              messages.INVALID_DATA
+            )
+          );
+      }
+      const response = await userImplementation.resetPassword(value);
       res.status(ResponseService.status).send(response);
     } catch (error) {
       ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;

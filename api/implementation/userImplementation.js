@@ -40,7 +40,7 @@ class UserImplementation {
       const response = await UserQueries.createUser(data);
 
       if (response) {
-        const otp = await sendOTP(email);
+        await sendOTP(email);
         ResponseService.status = constants.CODE.OK;
         return ResponseService.responseService(
           constants.STATUS.SUCCESS,
@@ -261,6 +261,94 @@ class UserImplementation {
       return ResponseService.responseService(
         constants.STATUS.SUCCESS,
         response,
+        messages.PASSWORD_UPDATED
+      );
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async forgetPassword(data) {
+    try {
+      const { email } = data;
+      const user = await UserQueries.getUserByEmail(email);
+      if (!user) {
+        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.EMAIL_NOT_FOUND
+        );
+      }
+
+      await sendOTP(email);
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        [],
+        messages.OTP_SENT
+      );
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
+
+  async resetPassword(data) {
+    try {
+      const { email, otp, newPassword } = data;
+      const user = await UserQueries.getUserByEmail(email);
+
+      if (!user) {
+        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.EMAIL_NOT_FOUND
+        );
+      }
+
+      if (user.otp !== otp) {
+        ResponseService.status = constants.CODE.NOT_ACCEPTED;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.INVALID_OTP
+        );
+      }
+
+      const currentTime = new Date();
+      if (currentTime > user.otpExpiration) {
+        ResponseService.status = constants.CODE.NOT_ACCEPTED;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.OTP_EXPIRED
+        );
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      user.password = hashedPassword;
+      user.otp = null;
+      user.otpExpiration = null;
+      await user.save();
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        [],
         messages.PASSWORD_UPDATED
       );
     } catch (error) {
