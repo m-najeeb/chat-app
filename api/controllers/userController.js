@@ -204,6 +204,21 @@ class UserController {
       );
     }
   }
+
+  async signOut(req, res) {
+    try {
+      const userId = req.params.id;
+      const response = await userImplementation.signOut(userId);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserController();

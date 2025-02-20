@@ -19,6 +19,7 @@ module.exports = {
   RECORD_FOUND: "Record Found",
   SUCCESSFULLY_SIGN_IN: "Successfully Sign In",
   SUCCESSFULLY_SIGN_UP: "Successfully Sign Up",
+  SUCCESSFULLY_SIGN_OUT: "Successfully Sign Out",
   TOKEN_EXPIRED: "Token Expired",
   USERNAME_EXISTS: "Username Exists",
   USER_NOT_FOUND: "User Not Found",

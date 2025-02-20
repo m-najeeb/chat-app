@@ -360,6 +360,38 @@ class UserImplementation {
       );
     }
   }
+
+  async signOut(userId) {
+    try {
+      const user = await UserQueries.getUserById(userId);
+      if (!user) {
+        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.USER_NOT_FOUND
+        );
+      }
+
+      user.isOnline = false;
+      user.refreshToken = null;
+      await user.save();
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.ERROR,
+        [],
+        messages.SUCCESSFULLY_SIGN_OUT
+      );
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserImplementation();
