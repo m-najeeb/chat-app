@@ -11,6 +11,6 @@ router.post("/profile-edit", verifyToken, userController.profileEdit);
 router.post("/change-password", verifyToken, userController.changePassword);
 router.post("/forget-password", userController.forgetPassword);
 router.post("/reset-password", userController.resetPassword);
-router.post("/sign-out/:id", verifyToken, userController.signOut);
+router.post("/sign-out", verifyToken, userController.signOut);
 
 module.exports = router;

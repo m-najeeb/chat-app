@@ -207,7 +207,7 @@ class UserController {
 
   async signOut(req, res) {
     try {
-      const userId = req.params.id;
+      const userId = req.user.id;
       const response = await userImplementation.signOut(userId);
       res.status(ResponseService.status).send(response);
     } catch (error) {
