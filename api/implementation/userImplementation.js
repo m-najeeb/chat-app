@@ -41,7 +41,7 @@ class UserImplementation {
 
       if (response) {
         await sendOTP(email);
-        ResponseService.status = constants.CODE.OK;
+        ResponseService.status = constants.CODE.CREATED;
         return ResponseService.responseService(
           constants.STATUS.SUCCESS,
           response,
