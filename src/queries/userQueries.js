@@ -35,20 +35,12 @@ class UserQueries {
     );
   }
 
-  async getUsersByPagination(page = 1, limit = 10) {
-    const skip = (page - 1) * limit;
+  async getPaginatedUsers(skip, limit) {
+    return await UserSchema.find().skip(skip).limit(limit);
+  }
 
-    const [users, totalRecords] = await Promise.all([
-      UserSchema.find({}).skip(skip).limit(limit).lean(),
-      UserSchema.countDocuments(),
-    ]);
-
-    return {
-      users,
-      totalPages: Math.ceil(totalRecords / limit),
-      currentPage: page,
-      totalRecords,
-    };
+  async getUserCount() {
+    return await UserSchema.countDocuments();
   }
 }
 

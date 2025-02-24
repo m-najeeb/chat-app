@@ -395,26 +395,22 @@ class UserImplementation {
 
   async getUsers(data) {
     try {
-      const { page = 1, limit = 10 } = data;
+      const page = parseInt(data.page) || 1;
+      const limit = parseInt(data.limit) || 10;
+      const skip = (page - 1) * limit;
 
-      const usersData = await UserQueries.getUsersByPagination(
-        Number(page),
-        Number(limit)
-      );
-
-      if (!usersData) {
-        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
-        return ResponseService.responseService(
-          constants.STATUS.SUCCESS,
-          usersData,
-          messages.RECORD_NOT_FOUND
-        );
-      }
+      const users = await UserQueries.getPaginatedUsers(skip, limit);
+      const totalUsers = await UserQueries.getUserCount();
 
       ResponseService.status = constants.CODE.OK;
       return ResponseService.responseService(
         constants.STATUS.SUCCESS,
-        usersData,
+        {
+          users,
+          totalPages: Math.ceil(totalUsers / limit),
+          currentPage: page,
+          totalUsers,
+        },
         messages.RECORD_FOUND
       );
     } catch (error) {
