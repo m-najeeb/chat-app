@@ -379,7 +379,7 @@ class UserImplementation {
 
       ResponseService.status = constants.CODE.OK;
       return ResponseService.responseService(
-        constants.STATUS.ERROR,
+        constants.STATUS.SUCCESS,
         [],
         messages.SUCCESSFULLY_SIGN_OUT
       );
