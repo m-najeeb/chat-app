@@ -402,12 +402,14 @@ class UserImplementation {
       const users = await UserQueries.getPaginatedUsers(skip, limit);
       const totalUsers = await UserQueries.getUserCount();
 
+      const totalPages = Math.ceil(totalUsers / limit);
+
       ResponseService.status = constants.CODE.OK;
       return ResponseService.responseService(
         constants.STATUS.SUCCESS,
         {
           users,
-          totalPages: Math.ceil(totalUsers / limit),
+          totalPages,
           currentPage: page,
           totalUsers,
         },
