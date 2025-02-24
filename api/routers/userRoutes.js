@@ -12,5 +12,6 @@ router.post("/change-password", verifyToken, userController.changePassword);
 router.post("/forget-password", userController.forgetPassword);
 router.post("/reset-password", userController.resetPassword);
 router.post("/sign-out", verifyToken, userController.signOut);
+router.get("/get-users", userController.getUsers);
 
 module.exports = router;

@@ -219,6 +219,21 @@ class UserController {
       );
     }
   }
+
+  async getUsers(req, res) {
+    try {
+      const data = req.query;
+      const response = await userImplementation.getUsers(data);
+      res.status(ResponseService.status).send(response);
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserController();

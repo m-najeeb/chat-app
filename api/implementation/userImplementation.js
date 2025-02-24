@@ -392,6 +392,40 @@ class UserImplementation {
       );
     }
   }
+
+  async getUsers(data) {
+    try {
+      const { page = 1, limit = 10 } = data;
+
+      const usersData = await UserQueries.getUsersByPagination(
+        Number(page),
+        Number(limit)
+      );
+
+      if (!usersData) {
+        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
+        return ResponseService.responseService(
+          constants.STATUS.SUCCESS,
+          usersData,
+          messages.RECORD_NOT_FOUND
+        );
+      }
+
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        usersData,
+        messages.RECORD_FOUND
+      );
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserImplementation();
