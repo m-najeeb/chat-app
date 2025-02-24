@@ -17,6 +17,7 @@ module.exports = {
   PASSWORD_SAME_AS_OLD: "Password Same As Old",
   PASSWORD_UPDATED: "Password Updated",
   RECORD_FOUND: "Record Found",
+  RECORD_NOT_FOUND: "Record Not Found",
   SUCCESSFULLY_SIGN_IN: "Successfully Sign In",
   SUCCESSFULLY_SIGN_OUT: "Successfully Sign Out",
   SUCCESSFULLY_SIGN_UP: "Successfully Sign Up",
