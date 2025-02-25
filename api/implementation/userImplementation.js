@@ -396,7 +396,7 @@ class UserImplementation {
   async getUsers(data) {
     try {
       const page = parseInt(data.page) || 1;
-      const limit = parseInt(data.limit) || 10;
+      const limit = parseInt(data.limit) || 4;
       const skip = (page - 1) * limit;
 
       const users = await UserQueries.getPaginatedUsers(skip, limit);
