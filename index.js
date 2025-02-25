@@ -6,26 +6,28 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const http = require("http");
 
+const { initializeSocket } = require("./src/services/socketService");
 const setup = require("./api/routes");
 
 const app = express();
-
+const server = http.createServer(app);
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
-// set security HTTP headers
+// Set security HTTP headers
 app.use(helmet());
 
-// sanitize request data
+// Sanitize request data
 app.use(mongoSanitize());
 
-// enable cors
+// Enable CORS
 app.use(cors());
 app.options("*", cors());
 
-// parse json request body
+// Parse JSON request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -43,26 +45,25 @@ logger.token("status-format", (req, res) => {
 
 app.use(logger(":method :url :status-format :status :response-time ms"));
 
-//test route
+// Test route
 app.get("/", (req, res) => {
   res.send("Hello, Server is Up and Running!");
 });
 
-// mongo connection
+// MongoDB connection
 const dbUri = process.env.DB_URI;
 mongoose
   .connect(dbUri)
-  .then(() => {
-    console.log("Database Connected Successfully");
-  })
+  .then(() => console.log("Database Connected Successfully"))
   .catch((error) => {
-    console.log("db error", error);
+    console.error("DB Connection Error:", error);
     process.exit(1);
   });
 
 setup(app);
+initializeSocket(server);
 
-// port listening
-app.listen(port, () => {
+// Start server
+server.listen(port, () => {
   console.log(`Server Running on port http://localhost:${port}`);
 });
