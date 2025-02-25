@@ -40,7 +40,8 @@ class UserImplementation {
       const response = await UserQueries.createUser(data);
 
       if (response) {
-        await sendOTP(email);
+        //!Dont send OTP right now
+        // await sendOTP(email);
         ResponseService.status = constants.CODE.CREATED;
         return ResponseService.responseService(
           constants.STATUS.SUCCESS,
@@ -71,7 +72,7 @@ class UserImplementation {
         );
       }
 
-      //! Not Sending OTP
+      //! Not Sending OTP right now
       //   if (user.isEmailVerified === false) {
       //     const otp = await sendOTP(data.email);
 
