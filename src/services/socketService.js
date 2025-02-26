@@ -95,7 +95,6 @@ class SocketService {
         chatRoom: roomId,
         sender: userId,
         content,
-        createdAt: message.createdAt,
       };
 
       this.io.to(roomId).emit("newMessage", messageData);
