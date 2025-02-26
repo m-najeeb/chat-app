@@ -425,6 +425,33 @@ class UserImplementation {
       );
     }
   }
+
+  async getUsersById(userId) {
+    try {
+      const user = await UserQueries.getUserDetailsById(userId);
+      if (!user) {
+        ResponseService.status = constants.CODE.RECORD_NOT_FOUND;
+        return ResponseService.responseService(
+          constants.STATUS.ERROR,
+          [],
+          messages.USER_NOT_FOUND
+        );
+      }
+      ResponseService.status = constants.CODE.OK;
+      return ResponseService.responseService(
+        constants.STATUS.SUCCESS,
+        user,
+        messages.RECORD_FOUND
+      );
+    } catch (error) {
+      ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
+      return ResponseService.responseService(
+        constants.STATUS.EXCEPTION,
+        error.message,
+        messages.EXCEPTION
+      );
+    }
+  }
 }
 
 module.exports = new UserImplementation();
