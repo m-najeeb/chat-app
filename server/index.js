@@ -7,6 +7,7 @@ const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const http = require("http");
+const path = require("path");
 
 const SocketService = require("./src/services/socketService");
 const setup = require("./api/routes");
@@ -14,6 +15,9 @@ const setup = require("./api/routes");
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 5000;
+
+// Serve static files from client folder
+app.use(express.static(path.join(__dirname, "client")));
 
 // Middleware setup
 app.use(express.json());

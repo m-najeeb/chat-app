@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-const Message = require("../models/messageModel");
+const { MessageSchema } = require("../models/messageModel");
 const constants = require("../utilities/constants");
 const messages = require("../utilities/messages");
 
@@ -83,7 +83,7 @@ class SocketService {
     }
 
     try {
-      const message = new Message({
+      const message = new MessageSchema({
         chatRoom: roomId,
         sender: userId,
         content,
