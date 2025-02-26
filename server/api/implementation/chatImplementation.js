@@ -56,12 +56,12 @@ class ChatImplementation {
           messages.CHAT_ROOM_NOT_FOUND
         );
       }
-      const messages = await ChatQueries.getMessagesByRoomId(roomId);
+      const text = await ChatQueries.getMessagesByRoomId(roomId);
       ResponseService.status = constants.CODE.OK;
       return ResponseService.responseService(
         constants.STATUS.SUCCESS,
-        messages,
-        messages.length > 0 ? messages.RECORD_FOUND : messages.NO_MESSAGES_FOUND
+        text,
+        messages.RECORD_FOUND
       );
     } catch (error) {
       ResponseService.status = constants.CODE.INTERNAL_SERVER_ERROR;
