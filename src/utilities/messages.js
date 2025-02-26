@@ -1,6 +1,8 @@
 module.exports = {
   AUTHENTICATION: "Authentication Required",
   AUTHENTICATION_ERROR: "Authentication Failed",
+  CHAT_ROOM_CREATED: "Chat room created successfully",
+  CHAT_ROOM_NOT_FOUND: "Chat room not found",
   EMAIL_EXISTS: "Email Exists",
   EMAIL_NOT_FOUND: "Email Not Found",
   EXCEPTION: "Exception",
@@ -8,6 +10,7 @@ module.exports = {
   INVALID_DATA: "Invalid Data",
   INVALID_OTP: "Invalid OTP",
   INVALID_TOKEN: "Invalid Token",
+  NO_MESSAGES_FOUND: "No messages found in this room",
   OTP_SENT: "OTP Sent",
   OTP_VERIFIED: "OTP Verified",
   OTP_EXPIRED: "OTP Expired",

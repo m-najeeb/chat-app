@@ -9,7 +9,7 @@ const helmet = require("helmet");
 const http = require("http");
 
 const SocketService = require("./src/services/socketService");
-const setupRoutes = require("./api/routes");
+const setup = require("./api/routes");
 
 const app = express();
 const server = http.createServer(app);
@@ -53,7 +53,7 @@ mongoose
   });
 
 // Setup routes
-setupRoutes(app);
+setup(app);
 
 // Initialize Socket.IO
 SocketService.initializeSocket(server);
